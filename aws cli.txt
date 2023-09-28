@@ -1,0 +1,111 @@
+Tomcat installation
+
+------------------------------------------------------------------------------------------------------------------------------========================================================================
+1.	sudo apt-get update
+2.	sudo apt-get install default-jdk
+3.	sudo groupadd tomcat
+4.	sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+5.	cd /tmp
+6.	sudo wget https://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.78/bin/apache-tomcat-8.5.78.tar.gz
+     ls -ltr
+7.	sudo mkdir /opt/tomcat
+8.	sudo tar -xvf apache-tomcat-8.5.54.tar.gz
+9.	sudo cp -R apache-tomcat-8.5.54/* /opt/tomcat
+10.	sudo chgrp -R tomcat /opt/tomcat
+11.	sudo chmod -R g+r conf
+12.	sudo chmod g+x conf
+13.	sudo chown -R tomcat webapps/ work/ temp/ logs/
+14.	sudo update-java-alternatives -l
+15.	sudo vi /etc/systemd/system/tomcat.service
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+Environment=JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64(output of this command)
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+User=tomcat
+Group=tomcat
+UMask=0007
+RestartSec=10
+Restart=always
+[Install]
+WantedBy=multi-user.target
+16.	sudo systemctl daemon-reload
+17.	sudo systemctl start tomcat
+18.	sudo systemctl status tomcat
+19.	sudo ufw allow 8080
+20.	sudo systemctl enable tomcat
+21.	swith to root sudo su
+22.	chmod +x /opt/tomcat/bin/*.sh
+23.	vi /opt/tomcat/conf/tomcat-users.xml
+       <user username=”admin” password=”password” roles=”manager-gui,admin-gui,manager-script”/>
+ 
+24.	vi /opt/tomcat/webapps/manager/META-INF/context.xml
+25.	vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
+made below changes in both files
+ 
+26.	systemctl restart tomcat 
+Reverse proxy setup
+1.	sudo apt-get install nginx –y
+2.	sudo vi /etc/nginx/sites-avilable/tomcat.conf
+ upstream tomcat {
+ server 127.0.0.1:8080 weight=100 max_fails=5 fail_timeout=5;
+ }
+
+ server {
+ listen 80;
+ server_name 18.221.16.237;
+
+ location / {
+ proxy_set_header X-Forwarded-Host 18.221.16.237;
+ proxy_set_header X-Forwarded-Server 18.221.16.237;
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ proxy_pass http://18.221.16.237:8080/;
+ }
+ }
+3.	sudo ln –s /etc/nginx/sites-avilable/tomcat.conf /etc/nginx/sites-enabled/
+4.	sudo systemctl restart nginx
+====================================================================================================================================================
+$ aws --version 
+$sudo apt update  -y
+$ sudo apt install 
+
+$ sudo apt install awscli
+
+$ aws --version 
+
+$ aws configure
+AWS Access Key ID [None]: Ajay************
+AWS Secret Access Key [None]: aj********
+Default region name [None]: us-west-1
+Default output format [None]: json
+
+
+Commands
+
+aws ec2 describe-instances
+
+ 
+aws ec2 describe-instances --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress}" --output text
+
+
+aws ec2 describe-instances --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name,Type:InstanceType,VpcId:VpcId}" --output table
+
+
+aws ec2 describe-instances --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" --filters "Name=instance-state-name,Values=running" --output table
+
+
+
+
+
+
+

@@ -1,0 +1,74 @@
+1 AJAY
+2 AISHWARYA
+3 ARUN D M
+4 ARUN R
+5 BHANU PRAKASH
+6 CHANDANA B N
+7 ANIKETHAN
+8 DEEPIKA VS
+9 DEVRAJ
+10 DHAREPPA
+11 DYAMGOND T
+12 GEETHA K
+13 HALESH MH
+
+14 -------HAREESHA SIR-----------
+15--------PRESENTATION-----------
+
+16 HEMANTH
+17 K VINAYKUMAR
+18 KARTHIK
+19 KEERTHI RATHOD
+20 KUBER GOWDA
+21 KUSHAL
+22 M G RATHOD
+23 MADHAVI G
+24 MAHALAKSHMI J
+25 MALLESH J
+26 MANASA G
+27 MEGHANA K
+28 M MUSTAFA
+29 N NANDEESH
+30 NITHIN
+31 PANKAJA D
+32 POOJA A
+33 RAHUL M
+34 RANGASWAMY P U
+35 RANJITHA S
+36 SANGMESH H
+37 SHEETAL J
+38 SHIVANAND P
+39 SHIVARAJA
+40 SIDDARTH D
+41 SIDDUSHREE R
+42 SMITHA G
+43 SUDHAKARA G
+44 SWATHI G
+45 THIMMESHA SM
+46 VIBHA
+47 VINAY K PISE
+48 YALLALING K
+
+
+                                                                              jenkins installtions
+sudo apt update
+java -version
+sudo apt install default-jre
+java -version
+sudo apt install default-jdk
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]   https://pkg.jenkins.io/debian-stable binary/ | sudo tee   /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update
+sudo apt install jenkins
+sudo systemctl start jenkins.service
+sudo systemctl status jenkins
+
+
+
+
+
+
+
+
+
+
